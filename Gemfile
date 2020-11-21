@@ -10,6 +10,9 @@ gem 'jquery-rails'
 # Use devise to generate users
 gem 'devise'
 
+# Use act_as_list to sorted lists and tasks from their position
+gem 'acts_as_list'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.4'
 # Use postgresql as the database for Active Record
