@@ -1,11 +1,13 @@
 <template>
   <div id="app">
     <p>{{ message }}</p>
+    <p>{{ original_board }}</p>
   </div>
 </template>
 
 <script>
 export default {
+  props: ['original_board'],
   data: function () {
     return {
       message: "Hello Vue!"
