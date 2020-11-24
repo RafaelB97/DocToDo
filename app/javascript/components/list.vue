@@ -8,10 +8,11 @@
         {{ task.name }}
       </div>
     </draggable>
-    <div class="card card-body">
-      <textarea v-model="message" class="form-control"></textarea>
-      <button @click="submitTask" class="btn btn-secondary">Add</button>
-    </div>
+
+    <a v-if="!editing" @click="startEditing">Add a card</a>
+    <textarea v-if="editing" v-model="message" ref="message" class="form-control"></textarea>
+    <button v-if="editing" @click="submitTask" class="btn btn-secondary">Add</button>
+    <a v-if="editing" @click="editing=false">Cancel</a>
   </div>
 </template>
 
@@ -26,11 +27,17 @@ export default {
 
   data: function() {
     return {
+      editing: false,
       message: ""
     }
   },
 
   methods: {
+    startEditing: function() {
+      this.editing = true
+      this.$nextTick(() => this.$refs.message.focus())
+    },
+
     submitTask: function() {
       var data = new FormData
       data.append("task[list_id]", this.list.id)
@@ -45,6 +52,7 @@ export default {
           const index = window.store.board.lists.findIndex(item => item.id === this.list.id)
           window.store.board.lists[index].tasks.push(data)
           this.message = ""
+          this.$nextTick(() => this.$refs.message.focus())
         }
       })
     },
