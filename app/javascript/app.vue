@@ -8,9 +8,11 @@
         <h6>{{ list.name }}</h6>
         <hr>
 
-        <div v-for="task in list.tasks" :key="task.id" class="card card-body">
-          {{ task.name }}
-        </div>
+        <draggable v-model="list.tasks" group="cards" @change="cardMoved(list, $event)">
+          <div v-for="task in list.tasks" :key="task.id" class="card card-body">
+            {{ task.name }}
+          </div>
+        </draggable>
         <div class="card card-body">
           <textarea v-model="messages[list.id]" class="form-control"></textarea>
           <button @click="submitTask(list.id)" class="btn btn-secondary">Add</button>
@@ -67,6 +69,23 @@ export default {
         data: data,
         dataType: "json"
       })
+    },
+
+    cardMoved: function(list, event) {
+      const evt = event.added || event.moved
+      if (evt) {
+        const element = evt.element
+        var data = new FormData
+        data.append("task[list_id]", list.id)
+        data.append("task[position]", evt.newIndex + 1)
+
+        Rails.ajax({
+          url: `/tasks/${element.id}/move`,
+          type: "PATCH",
+          data: data,
+          dataType: "json"
+        })
+      }
     }
   }
 }
