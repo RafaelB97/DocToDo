@@ -59,16 +59,15 @@ import App from '../app.vue'
 
 // Vue.use(TurbolinksAdapter)
 
+window.store = {}
+
 document.addEventListener('turbolinks:load', () => {
   var element = document.querySelector('#board')
   if (element != null) {
+    window.store.board = JSON.parse(element.dataset.board)
     const app = new Vue({
       el: element,
-      data: () => {
-        return {
-          board: JSON.parse(element.dataset.board)
-        }
-      },
+      data: window.store,
       template: '<App :original_board="board" />',
       components: { App }
     })
