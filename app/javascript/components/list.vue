@@ -4,7 +4,7 @@
     <hr>
 
     <draggable v-model="list.tasks" group="task" @change="taskMoved(list, $event)">
-      <task v-for="task in list.tasks" :key="task.id" :task="task"></task>
+      <task v-for="task in list.tasks" :key="task.id" :task="task" :list="list"></task>
     </draggable>
 
     <a v-if="!editing" @click="startEditing">Add a task</a>
