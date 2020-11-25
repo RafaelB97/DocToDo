@@ -3,13 +3,11 @@
     <h6>{{ list.name }}</h6>
     <hr>
 
-    <draggable v-model="list.tasks" group="cards" @change="cardMoved(list, $event)">
-      <div v-for="task in list.tasks" :key="task.id" class="card card-body">
-        {{ task.name }}
-      </div>
+    <draggable v-model="list.tasks" group="task" @change="taskMoved(list, $event)">
+      <task v-for="task in list.tasks" :key="task.id" :task="task"></task>
     </draggable>
 
-    <a v-if="!editing" @click="startEditing">Add a card</a>
+    <a v-if="!editing" @click="startEditing">Add a task</a>
     <textarea v-if="editing" v-model="message" ref="message" class="form-control"></textarea>
     <button v-if="editing" @click="submitTask" class="btn btn-secondary">Add</button>
     <a v-if="editing" @click="editing=false">Cancel</a>
@@ -19,9 +17,10 @@
 <script>
 import Rails from '@rails/ujs';
 import draggable from 'vuedraggable'
+import task from 'components/task'
 
 export default {
-  components: { draggable },
+  components: { draggable, task },
 
   props: ["list"],
 
@@ -57,7 +56,7 @@ export default {
       })
     },
 
-    cardMoved: function(list, event) {
+    taskMoved: function(list, event) {
       const evt = event.added || event.moved
       if (evt) {
         const element = evt.element
