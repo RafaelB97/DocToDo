@@ -7,10 +7,12 @@
       <task v-for="task in list.tasks" :key="task.id" :task="task" :list="list"></task>
     </draggable>
 
-    <a v-if="!editing" @click="startEditing">Add a task</a>
-    <textarea v-if="editing" v-model="message" ref="message" class="form-control"></textarea>
-    <button v-if="editing" @click="submitTask" class="btn btn-secondary">Add</button>
-    <a v-if="editing" @click="editing=false">Cancel</a>
+    <div class="card card-body">
+      <a v-if="!editing" @click="startEditing">Add a task</a>
+      <textarea v-if="editing" v-model="message" ref="message" class="form-control"></textarea>
+      <button v-if="editing" @click="submitTask" class="btn btn-secondary">Add</button>
+      <a v-if="editing" @click="editing=false">Cancel</a>
+    </div>
   </div>
 </template>
 
