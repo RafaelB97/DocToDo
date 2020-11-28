@@ -13,21 +13,27 @@
 ### Installation
 
 1. Make sure you have a postgres role called doc_to_do with any password, create the use with the next command.
-` sudo -u postgres createuser -s doc_to_do -P`
-With the `-P` value postgres ask you to type a password, once you have your user use this command to add the password in your environment variables.
-`echo 'export DOC_TO_DO_DATABASE_PASSWORD="PostgreSQL_Role_Password"' >> ~/.bashrc`
-Where `PostgresSQL_ROLE_Password` is the password you assing to doc_to_do role.
+
+    ` sudo -u postgres createuser -s doc_to_do -P`
+
+    With the `-P` value postgres ask you to type a password. Once you have your user use this command to add the password in your environment variables.
+
+    `echo 'export DOC_TO_DO_DATABASE_PASSWORD="PostgreSQL_Role_Password"' >> ~/.bashrc`
+
+    Where `PostgresSQL_ROLE_Password` is the password you assing to doc_to_do role.
 
 2. Clone this repository
-`git clone https://github.com/RafaelB97/DocToDo.git`
 
-3. Install dependencies
-Using bundle and yarn:
-`bundle && yarn`
+    `git clone https://github.com/RafaelB97/DocToDo.git`
+
+3. Install dependencies using bundle and yarn:
+    ```bash
+    cd DocToDo
+    bundle && yarn
+    ```
 
 3. Initialize the database.
     ```bash
-    cd doc_to_do
     rails db:create
     rails db:migrate
     ```
