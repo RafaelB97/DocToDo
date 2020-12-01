@@ -3,10 +3,6 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.1'
 
-# Use bootstrap for stylesheet
-gem 'bootstrap', '~> 5.0.0.alpha3'
-gem 'jquery-rails'
-
 # Use devise to generate users
 gem 'devise'
 
