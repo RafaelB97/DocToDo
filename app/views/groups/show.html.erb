@@ -20,7 +20,7 @@
   <%= @group.user.email %>
 </p>
 
-<p><%= @group.to_json(:include => {:lists => {:include => :tasks} }) %></p>
+<!-- <p><%= @group.to_json(:include => {:lists => {:include => :tasks} }) %></p> -->
 <%= tag.div id: :board, data: { board: @group.to_json(:include => {:lists => {:include => :tasks} }) } %>
 
 <br>

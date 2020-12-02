@@ -1,16 +1,16 @@
 <template>
   <div id="app">
     <p>{{ original_board.name }}</p>
-    <p>{{ original_board.lists }}</p>
+    <!-- <p>{{ original_board.lists }}</p> -->
 
-    <draggable v-model="board.lists" group="lists" class="row dragArea" @end="listMoved">
+    <draggable v-model="board.lists" group="lists" class="row dragArea" @update="listMoved">
       <list v-for="list in board.lists" :key="list.id" :list="list"></list>
     </draggable>
 
     <div class="card card-body">
       <a v-if="!editing" @click="startEditing">Add a list</a>
       <textarea v-if="editing" v-model="message" ref="message" class="form-control"></textarea>
-      <button v-if="editing" @click="submitTask" class="btn btn-secondary">Add</button>
+      <button v-if="editing" @click="submitList" class="btn btn-secondary">Add</button>
       <a v-if="editing" @click="editing=false">Cancel</a>
     </div>
   </div>
@@ -53,7 +53,7 @@ export default {
       this.$nextTick(() => this.$refs.message.focus())
     },
 
-    submitTask: function() {
+    submitList: function() {
       var data = new FormData
       data.append("list[group_id]", window.store.board.id)
       data.append("list[name]", this.message)

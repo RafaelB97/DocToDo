@@ -1,7 +1,14 @@
 <template>
   <div class="col-3">
-    <h6>{{ list.name }}</h6>
-    <hr>
+    <div class="btn-group">
+      <button type="button" class="btn" data-toggle="modal" data-target="#updateModal">{{ list.name }} id:{{ list.id }}</button>
+      <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="sr-only">Toggle Dropdown</span>
+      </button>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" data-toggle="modal" data-target="#deleteModal">Delete list</a>
+      </div>
+    </div>
 
     <draggable v-model="list.tasks" group="task" @change="taskMoved(list, $event)">
       <task v-for="task in list.tasks" :key="task.id" :task="task" :list="list"></task>
@@ -13,6 +20,50 @@
       <button v-if="editing" @click="submitTask" class="btn btn-secondary">Add</button>
       <a v-if="editing" @click="editing=false">Cancel</a>
     </div>
+
+    <!-- Modal update List -->
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Update list</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>New name:</p>
+            <input v-model='name' class='form-control'>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="name=list.name">Close</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" @click="updateList">Update</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal delete List -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Delete list</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Delete this list forever?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal" @click='deleteList'>Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -29,7 +80,8 @@ export default {
   data: function() {
     return {
       editing: false,
-      message: ""
+      message: "",
+      name: this.list.name
     }
   },
 
@@ -73,6 +125,31 @@ export default {
           dataType: "json"
         })
       }
+    },
+
+    updateList: function() {
+      var data = new FormData
+      data.append('list[name]', this.name)
+      Rails.ajax({
+        url: `/lists/${this.list.id}`,
+        type: 'PATCH',
+        data: data,
+        dataType: 'json',
+        success: data => {
+          this.list.name = this.name
+        }
+      })
+    },
+
+    deleteList: function() {
+      Rails.ajax({
+        url: `/lists/${this.list.id}`,
+        type: 'DELETE',
+        success: data => {
+          console.log(data)
+          location.reload()
+        }
+      })
     }
   }
 }
