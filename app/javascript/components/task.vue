@@ -1,26 +1,32 @@
 <template>
   <div>
-    <div @click='editing=true' class="card card-body">
-      {{ task.name }}
+    <div class="handleTask">
+      <div class="card card-body" data-toggle="modal" v-bind:data-target="'#updateModalTask'+task.id">
+        {{ task.name }}
+      </div>
     </div>
 
-    <div v-if='editing' class='modal-backdrop show'></div>
-
-    <div v-if='editing' @click='closeModal' class='modal show' style='display: block'>
-      <div class='modal-dialog'>
+    <!-- Modal -->
+    <div class="modal fade" v-bind:id="'updateModalTask'+task.id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class='modal-title'>{{ task.name }}</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Update task</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
           <div class="modal-body">
             <input v-model='name' class='form-control'>
           </div>
           <div class="modal-footer">
-            <button @click='save' type='button' class='btn btn-primary'>Save changes</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" @click='name=task.name'>Close</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" @click='save'>Save changes</button>
           </div>
         </div>
       </div>
     </div>
+
   </div>
 </template>
 

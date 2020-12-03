@@ -3,7 +3,7 @@
     <p>{{ original_board.name }}</p>
     <!-- <p>{{ original_board.lists }}</p> -->
 
-    <draggable v-model="board.lists" group="lists" class="row dragArea" @update="listMoved">
+    <draggable v-model="board.lists" group="lists" class="row dragArea" handle=".handle" @update="listMoved">
       <list v-for="list in board.lists" :key="list.id" :list="list"></list>
     </draggable>
 

@@ -1,28 +1,30 @@
 <template>
   <div class="col-3">
-    <div class="btn-group">
-      <button type="button" class="btn" data-toggle="modal" data-target="#updateModal">{{ list.name }} id:{{ list.id }}</button>
-      <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="sr-only">Toggle Dropdown</span>
-      </button>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" data-toggle="modal" data-target="#deleteModal">Delete list</a>
+    <div class="handle">
+      <div class="btn-group">
+        <button type="button" class="btn" data-toggle="modal" v-bind:data-target="'#updateModal'+list.id">{{ list.name }} id:{{ list.id }}</button>
+        <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" data-toggle="modal" v-bind:data-target="'#deleteModal'+list.id">Delete list</a>
+        </div>
+      </div>
+
+      <draggable v-model="list.tasks" group="task" handle=".handleTask" @change="taskMoved(list, $event)">
+        <task v-for="task in list.tasks" :key="task.id" :task="task" :list="list"></task>
+      </draggable>
+
+      <div class="card card-body">
+        <a v-if="!editing" @click="startEditing">Add a task</a>
+        <textarea v-if="editing" v-model="message" ref="message" class="form-control"></textarea>
+        <button v-if="editing" @click="submitTask" class="btn btn-secondary">Add</button>
+        <a v-if="editing" @click="editing=false">Cancel</a>
       </div>
     </div>
 
-    <draggable v-model="list.tasks" group="task" @change="taskMoved(list, $event)">
-      <task v-for="task in list.tasks" :key="task.id" :task="task" :list="list"></task>
-    </draggable>
-
-    <div class="card card-body">
-      <a v-if="!editing" @click="startEditing">Add a task</a>
-      <textarea v-if="editing" v-model="message" ref="message" class="form-control"></textarea>
-      <button v-if="editing" @click="submitTask" class="btn btn-secondary">Add</button>
-      <a v-if="editing" @click="editing=false">Cancel</a>
-    </div>
-
     <!-- Modal update List -->
-    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModal" aria-hidden="true">
+    <div class="modal fade" v-bind:id="'updateModal'+list.id" tabindex="-1" aria-labelledby="updateModal" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -44,7 +46,7 @@
     </div>
 
     <!-- Modal delete List -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true">
+    <div class="modal fade" v-bind:id="'deleteModal'+list.id" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
