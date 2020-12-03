@@ -71,7 +71,6 @@ class TasksController < ApplicationController
     @task = Task.new(task_params)
     @task.description = ""
     @task.finish = false
-    @task.date = "2000-01-01"
 
     respond_to do |format|
       if @task.save
