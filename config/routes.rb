@@ -8,6 +8,9 @@ Rails.application.routes.draw do
     end
   end
   resources :tasks do
+    collection do
+      post :createFromGroup
+    end
     member do
       patch :move
     end

@@ -99,7 +99,7 @@ export default {
       data.append("task[name]", this.message)
 
       Rails.ajax({
-        url: "/tasks",
+        url: "/tasks/createFromGroup",
         type: "POST",
         data: data,
         dataType: "json",

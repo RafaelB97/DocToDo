@@ -20,8 +20,30 @@
             <input v-model='name' class='form-control'>
           </div>
           <div class="modal-footer">
+            <button type="button" class="btn btn-danger mr-auto" data-dismiss="modal" data-toggle="modal" v-bind:data-target="'#deleteModalTask'+task.id">Delete</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal" @click='name=task.name'>Close</button>
             <button type="button" class="btn btn-primary" data-dismiss="modal" @click='save'>Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal delete List -->
+    <div class="modal fade" v-bind:id="'deleteModalTask'+task.id" tabindex="-1" aria-labelledby="deleteModalTask" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Delete task</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Delete this task forever?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal" @click='deleteTask'>Delete</button>
           </div>
         </div>
       </div>
@@ -61,6 +83,17 @@ export default {
           window.store.board.lists[list_index].tasks.splice(task_index, 1, data)
 
           this.editing = false
+        }
+      })
+    },
+
+    deleteTask: function() {
+      Rails.ajax({
+        url: `/tasks/${this.task.id}`,
+        type: 'DELETE',
+        success: data => {
+          console.log(data)
+          location.reload()
         }
       })
     }
