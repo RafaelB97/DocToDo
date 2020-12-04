@@ -1,5 +1,5 @@
 <template>
-  <div class="col-3">
+  <div>
     <div class="handle">
       <div class="btn-group">
         <button type="button" class="btn" data-toggle="modal" v-bind:data-target="'#updateModal'+list.id">{{ list.name }} id:{{ list.id }}</button>
