@@ -1,3 +1,18 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  root 'home#index'
+  devise_for :users
+  resources :groups
+  resources :lists do
+    member do
+      patch :move
+    end
+  end
+  resources :tasks do
+    collection do
+      post :createFromGroup
+    end
+    member do
+      patch :move
+    end
+  end
 end
