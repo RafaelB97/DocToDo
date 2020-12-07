@@ -92,6 +92,7 @@ export default {
   grid-auto-flow: column;
   grid-gap: 15px;
   overflow-x: auto;
+  height: 60vh;
 }
 
 .addContainer {

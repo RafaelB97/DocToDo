@@ -2,7 +2,7 @@
   <div>
     <div class="handle">
       <div class="btn-group">
-        <button type="button" class="btn" data-toggle="modal" v-bind:data-target="'#updateModal'+list.id">{{ list.name }} id:{{ list.id }}</button>
+        <button type="button" class="btn" data-toggle="modal" v-bind:data-target="'#updateModal'+list.id"><strong>{{ list.name }}</strong></button>
         <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <span class="sr-only">Toggle Dropdown</span>
         </button>
