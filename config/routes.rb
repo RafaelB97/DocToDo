@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :invitations
   root 'home#index'
   devise_for :users
   resources :groups
@@ -16,4 +15,6 @@ Rails.application.routes.draw do
       patch :move
     end
   end
+  resources :invitations
+  resources :assigns
 end
