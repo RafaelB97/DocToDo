@@ -19,6 +19,9 @@ Rails.application.routes.draw do
     collection do
       post :addUser
     end
+    member do
+      delete :destroyFromGroup
+    end
   end
   resources :assigns
 end

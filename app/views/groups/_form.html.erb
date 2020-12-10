@@ -11,19 +11,19 @@
     </div>
   <% end %>
 
-  <div class="field">
+  <div class="form-group">
     <%= form.label :name %>
-    <%= form.text_field :name %>
+    <%= form.text_field :name, class: "form-control" %>
   </div>
 
-  <div class="field">
+  <div class="form-group">
     <%= form.label :description %>
-    <%= form.text_area :description %>
+    <%= form.text_area :description, class: "form-control" %>
   </div>
 
-  <div class="field">
-    <%= form.label :private %>
-    <%= form.check_box :private %>
+  <div class="form-group form-check">
+    <%= form.check_box :private, class: "form-check-input" %>
+    <%= form.label :private, class: "form-check-label" %>
   </div>
 
   <div class="actions">

@@ -1,10 +1,10 @@
 class InvitationsController < ApplicationController
-  before_action :set_invitation, only: [:show, :edit, :update, :destroy]
+  before_action :set_invitation, only: [:show, :edit, :update, :destroy, :destroyFromGroup]
 
   # GET /invitations
   # GET /invitations.json
   def index
-    @invitations = Invitation.all
+    @invitations = current_user.invitations
   end
 
   # GET /invitations/1
@@ -42,7 +42,7 @@ class InvitationsController < ApplicationController
   def update
     respond_to do |format|
       if @invitation.update(invitation_params)
-        format.html { redirect_to @invitation, notice: 'Invitation was successfully updated.' }
+        format.html { redirect_to groups_path, notice: 'Invitation was successfully updated.' }
         format.json { render :show, status: :ok, location: @invitation }
       else
         format.html { render :edit }
@@ -66,7 +66,7 @@ class InvitationsController < ApplicationController
     user = User.where(email: invitation_params[:email]).take
     if user
       if user != current_user
-        inList = Invitation.where(user: user).take
+        inList = Invitation.where(user: user, group_id: invitation_params[:group_id]).take
         if inList
           puts "Already in list"
           render json: { msg: "User already in list" }, status: 406
@@ -94,6 +94,14 @@ class InvitationsController < ApplicationController
       puts "User not found"
       # render :json => true, :status => 404
       render json: { msg: "User not found" }, status: 404
+    end
+  end
+
+  def destroyFromGroup
+    @invitation.destroy
+    respond_to do |format|
+      format.html { redirect_to invitations_path }
+      format.json { head :no_content }
     end
   end
 
