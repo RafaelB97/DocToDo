@@ -18,7 +18,9 @@
 
   <div class="form-group">
     <%= f.label :specialist %><br />
-    <%= f.text_field :specialist, autofocus: true, class: "form-control" %>
+    <%= f.select :specialist, ["Surgery", "Pediatric", "Dermatology", "Internal Medicine",
+    "Radiology", "Cardiology", "Orthopaedics", "Family Medicine", "Neurology", "Oncology",
+    "Psychiatry", "Obstetrics", "Gynaecology", "Anesthesiology", "Ophthamology", "Plastic Surgery", "Otro"], {}, class: "custom-select" %>
   </div>
 
   <div class="form-group">

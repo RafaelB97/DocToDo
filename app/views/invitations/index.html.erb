@@ -20,7 +20,7 @@
   <tbody>
     <% @invitations.each do |invitation| %>
       <tr>
-        <td>The user: <strong><%= invitation.group.user.email %></strong> has invited you to his group: <strong><%= invitation.group.name %></strong>
+        <td>The user: <strong><%= invitation.group.user.name %> <%= invitation.group.user.lastName %></strong> has invited you to his group: <strong><%= invitation.group.name %></strong>
         <% if invitation.status == 0 %>
           <td>
             <%= form_with(model: invitation, method: "patch") do |form| %>
