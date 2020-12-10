@@ -7,12 +7,20 @@ class GroupsController < ApplicationController
   def index
     # @groups = Group.all
     @groups = current_user.groups
+    @invitations = current_user.invitations
+    @invitations = Invitation.where(user: current_user, status: 1)
   end
 
   # GET /groups/1
   # GET /groups/1.json
   def show
-    puts @group.to_json(:include => {:lists => {:include => :tasks} } )
+    puts @group.to_json(:include => [:user , {:lists => {:include => :tasks} }, :invitations] )
+    if current_user != @group.user
+      @invited = Invitation.where(user_id: current_user.id, group_id: @group.id, status: 1).take
+      unless @invited
+        redirect_to root_path
+      end
+    end
   end
 
   # GET /groups/new

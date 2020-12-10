@@ -15,4 +15,13 @@ Rails.application.routes.draw do
       patch :move
     end
   end
+  resources :invitations do
+    collection do
+      post :addUser
+    end
+    member do
+      delete :destroyFromGroup
+    end
+  end
+  resources :assigns
 end

@@ -1,33 +1,56 @@
-<p id="notice"><%= notice %></p>
+<%= stylesheet_link_tag "bar" %>
+<%= stylesheet_link_tag "groupsIndex" %>
+<!-- The sidebar -->
+
+<div class="sidebar">
+  <%= link_to "Your Groups", groups_path, class: "active"%>
+  <%= link_to "Invitations", invitations_path%>
+  <a href="#news">Tasks</a>
+</div>
+
+<!-- Page content -->
+<div class="content">
 
 <h1>Groups</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Private</th>
-      <th>User</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<% if @groups.count == 0 %>
+  <p>You don't have any group created yet, create one!</p>
+<% end %>
 
-  <tbody>
-    <% @groups.each do |group| %>
-      <tr>
-        <td><%= group.name %></td>
-        <td><%= group.description %></td>
-        <td><%= group.private %></td>
-        <td><%= group.user_id %></td>
-        <td><%= link_to 'Show', group %></td>
-        <td><%= link_to 'Edit', edit_group_path(group) %></td>
-        <td><%= link_to 'Destroy', group, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="groupContainer">
+  <% @groups.each do |group| %>
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title"><%= group.name %></h5>
+        <p class="card-text"><%= group.description %></p>
+        <%= link_to 'Destroy', group, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger"%>
+        <%= link_to 'Show', group, class: "btn btn-primary"%>
+      </div>
+    </div>
+  <% end %>
+</div>
 
 <br>
 
-<%= link_to 'New Group', new_group_path %>
+<%= link_to 'New Group', new_group_path, class: "btn btn-light"%>
+
+<h1>Your invited teams</h1>
+
+<% if @invitations.count == 0 %>
+  <p>Nobody invited you, to a group yet!</p>
+<% end %>
+
+<% @invitations.inspect %>
+<div class="groupContainer">
+  <% @invitations.each do |invitation| %>
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title"><%= invitation.group.name %></h5>
+        <p class="card-text"><%= invitation.group.description %></p>
+        <%= link_to 'Show', invitation.group, class: "btn btn-primary"%>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+</div> 

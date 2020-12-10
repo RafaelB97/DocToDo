@@ -10,6 +10,7 @@ json.group do
     json.created_at group.created_at
     json.updated_at group.updated_at
     # json.lists @group.lists
+    json.user group.user
     json.lists do
         json.array! group.lists, :id, :name, :category, :position, :group_id, :created_at, :updated_at, :tasks
 =begin
@@ -19,6 +20,9 @@ json.group do
             json.task list.tasks
         end
 =end
+    end
+    json.invitations do
+        json.array! group.invitations, :id, :status, :user_id, :group_id, :created_at, :updated_at, :user
     end
     json.url group_url(group, format: :json)
 end
