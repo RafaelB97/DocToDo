@@ -22,7 +22,7 @@
     <span class="navbar-text">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" :href="'/groups/'+board.id+'/edit'">Edit group</a>
+          <a class="nav-link" @click="edit">Edit group</a>
         </li>
       </ul>
     </span>
@@ -31,7 +31,13 @@
 
 <script>
 export default {
-  props: ["board"]
+  props: ["board"],
+  methods: {
+    edit: function() {
+      this.$root.$emit('appFlag')
+
+    }
+  }
 }
 </script>
 

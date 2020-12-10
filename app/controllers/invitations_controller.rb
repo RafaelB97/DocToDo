@@ -56,8 +56,44 @@ class InvitationsController < ApplicationController
   def destroy
     @invitation.destroy
     respond_to do |format|
-      format.html { redirect_to invitations_url, notice: 'Invitation was successfully destroyed.' }
+      format.html { render action: :show }
       format.json { head :no_content }
+    end
+  end
+
+  def addUser
+    puts invitation_params
+    user = User.where(email: invitation_params[:email]).take
+    if user
+      if user != current_user
+        inList = Invitation.where(user: user).take
+        if inList
+          puts "Already in list"
+          render json: { msg: "User already in list" }, status: 406
+        else
+          @invitation = Invitation.new
+          @invitation.group_id = invitation_params[:group_id]
+          @invitation.user = user
+          @invitation.status = 0
+
+          respond_to do |format|
+            if @invitation.save
+              format.html { redirect_to @invitation, notice: 'Invitation was successfully created.' }
+              format.json { render :show, status: :created, location: @invitation }
+            else
+              format.html { render :new }
+              format.json { render json: @invitation.errors, status: :unprocessable_entity }
+            end
+          end
+        end
+      else
+        puts "Current user not allowed"
+        render json: { msg: "Current user not allowed" }, status: 406
+      end
+    else
+      puts "User not found"
+      # render :json => true, :status => 404
+      render json: { msg: "User not found" }, status: 404
     end
   end
 
@@ -69,6 +105,6 @@ class InvitationsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def invitation_params
-      params.require(:invitation).permit(:status, :user_id, :group_id)
+      params.require(:invitation).permit(:status, :user_id, :group_id, :email)
     end
 end

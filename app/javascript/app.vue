@@ -3,6 +3,10 @@
     <groupbar :board="original_board"></groupbar>
     <!-- <p>{{ original_board.lists }}</p> -->
 
+    <div class="containerGrid">
+    <sidebar v-if="editGroup" :board="original_board"/>
+
+    <div class="main">
     <draggable v-model="board.lists" group="lists" class="row dragArea" handle=".handle" @update="listMoved">
       <list v-for="list in board.lists" :key="list.id" :list="list"></list>
     </draggable>
@@ -20,6 +24,8 @@
         <a v-if="editing" @click="editing=false">Cancel</a>
       </div>
     </div>
+    </div>
+    </div>
 
   </div>
 </template>
@@ -29,9 +35,10 @@ import Rails from '@rails/ujs';
 import draggable from 'vuedraggable'
 import list from 'components/list'
 import groupbar from 'components/groupbar'
+import sidebar from 'components/sidebar'
 
 export default {
-  components: { draggable, list, groupbar },
+  components: { draggable, list, groupbar, sidebar },
 
   props: ['original_board'],
 
@@ -40,7 +47,14 @@ export default {
       board: this.original_board,
       editing: false,
       message: "",
+      editGroup: false
     }
+  },
+
+  mounted() {
+    this.$root.$on('appFlag', () => {
+      this.changeEditGroup()
+    })
   },
 
   methods: {
@@ -79,6 +93,10 @@ export default {
         }
       })
     },
+
+    changeEditGroup: function() {
+      this.editGroup = !this.editGroup
+    }
   }
 }
 </script>
@@ -91,13 +109,17 @@ export default {
   grid-auto-columns: 272px;
   grid-auto-flow: column;
   grid-gap: 15px;
-  overflow-x: auto;
-  height: 60vh;
+  /* height: 60vh; */
 }
 
 .addContainer {
   display: flex;
   justify-content: center;
+  min-width: 25vw;
+}
+
+.card {
+  min-width: 20vw;
 }
 
 .addArea {
@@ -105,5 +127,13 @@ export default {
   flex-basis: 25%;
   flex-grow: 0;
   flex-shrink: 0;
+}
+
+.containerGrid {
+  display: flex;
+}
+
+.main {
+  overflow-x: auto;
 }
 </style>
